@@ -7,15 +7,35 @@ document.addEventListener("DOMContentLoaded", function () {
   activarBotonVolverArriba();
 });
 
-// Recorre los enlaces del navbar y le agrega la clase "active"
-// al que corresponda con la pagina actual.
+// Cada subpagina pertenece a una seccion principal del menu. Se usa este
+// mapa para que, por ejemplo, estando en "ciclo-de-vida.html" se resalte
+// el enlace "Conocer" (y no se quede el menu sin ningun item marcado).
+var SECCION_DE_LA_PAGINA = {
+  "conocer.html": "conocer.html",
+  "ciclo-de-vida.html": "conocer.html",
+  "anatomia.html": "conocer.html",
+  "especies.html": "especies.html",
+  "mariposa-monarca.html": "especies.html",
+  "mariposas-de-jardin.html": "especies.html",
+  "habitat-jardines.html": "habitat-jardines.html",
+  "plantas-nutricias.html": "habitat-jardines.html",
+  "observacion-responsable.html": "habitat-jardines.html",
+  "galeria.html": "galeria.html",
+  "conservacion.html": "conservacion.html",
+  "recursos.html": "recursos.html",
+  "juego.html": "recursos.html"
+};
+
+// Recorre los enlaces del navbar y le agrega la clase "active" al que
+// corresponda con la seccion de la pagina actual (aunque sea una subpagina).
 function marcarEnlaceActivo() {
   var paginaActual = window.location.pathname.split("/").pop() || "index.html";
+  var seccionActual = SECCION_DE_LA_PAGINA[paginaActual] || paginaActual;
   var enlaces = document.querySelectorAll(".navbar-mariposas .nav-link");
 
   enlaces.forEach(function (enlace) {
     var destino = enlace.getAttribute("href");
-    if (destino === paginaActual) {
+    if (destino === seccionActual) {
       enlace.classList.add("active");
     }
   });
