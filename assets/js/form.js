@@ -3,16 +3,16 @@
 // del envio de mail mediante un enlace "mailto" con los datos completados.
 
 document.addEventListener("DOMContentLoaded", function () {
-  var formulario = document.getElementById("form-contacto");
+  let formulario = document.getElementById("form-contacto");
   if (!formulario) return;
 
-  var mensajeExito = document.getElementById("mensaje-exito");
-  var mensajeError = document.getElementById("mensaje-error");
+  let mensajeExito = document.getElementById("mensaje-exito");
+  let mensajeError = document.getElementById("mensaje-error");
 
   formulario.addEventListener("submit", function (evento) {
     evento.preventDefault();
 
-    var errores = validarFormulario(formulario);
+    let errores = validarFormulario(formulario);
     limpiarErrores(formulario);
 
     if (errores.length > 0) {
@@ -33,13 +33,13 @@ document.addEventListener("DOMContentLoaded", function () {
 // Valida los campos obligatorios del formulario y devuelve
 // un arreglo con los mensajes de error encontrados.
 function validarFormulario(formulario) {
-  var errores = [];
+  let errores = [];
 
-  var nombre = formulario.nombre.value.trim();
-  var apellido = formulario.apellido.value.trim();
-  var email = formulario.email.value.trim();
-  var asunto = formulario.asunto.value;
-  var mensaje = formulario.mensaje.value.trim();
+  let nombre = formulario.nombre.value.trim();
+  let apellido = formulario.apellido.value.trim();
+  let email = formulario.email.value.trim();
+  let asunto = formulario.asunto.value;
+  let mensaje = formulario.mensaje.value.trim();
 
   if (nombre.length < 2) {
     errores.push({ campo: "nombre", texto: "El nombre debe tener al menos 2 caracteres." });
@@ -62,7 +62,7 @@ function validarFormulario(formulario) {
 
 // Formato de correo simple: algo@algo.algo
 function validarEmail(valor) {
-  var patron = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let patron = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return patron.test(valor);
 }
 
@@ -70,11 +70,11 @@ function validarEmail(valor) {
 // debajo de cada uno usando las clases de validacion de Bootstrap.
 function mostrarErrores(errores) {
   errores.forEach(function (error) {
-    var campo = document.getElementById(error.campo);
+    let campo = document.getElementById(error.campo);
     if (!campo) return;
     campo.classList.add("is-invalid");
 
-    var contenedorError = campo.parentElement.querySelector(".invalid-feedback");
+    let contenedorError = campo.parentElement.querySelector(".invalid-feedback");
     if (contenedorError) {
       contenedorError.textContent = error.texto;
     }
@@ -82,7 +82,7 @@ function mostrarErrores(errores) {
 }
 
 function limpiarErrores(formulario) {
-  var campos = formulario.querySelectorAll(".is-invalid");
+  let campos = formulario.querySelectorAll(".is-invalid");
   campos.forEach(function (campo) {
     campo.classList.remove("is-invalid");
   });
@@ -91,21 +91,21 @@ function limpiarErrores(formulario) {
 // Arma un enlace mailto con el asunto y el cuerpo del mensaje
 // y lo abre para que el usuario complete el envio con su propio cliente de correo.
 function enviarPorMail(formulario) {
-  var nombre = formulario.nombre.value.trim();
-  var apellido = formulario.apellido.value.trim();
-  var email = formulario.email.value.trim();
-  var asuntoSeleccionado = formulario.asunto.options[formulario.asunto.selectedIndex].text;
-  var mensaje = formulario.mensaje.value.trim();
+  let nombre = formulario.nombre.value.trim();
+  let apellido = formulario.apellido.value.trim();
+  let email = formulario.email.value.trim();
+  let asuntoSeleccionado = formulario.asunto.options[formulario.asunto.selectedIndex].text;
+  let mensaje = formulario.mensaje.value.trim();
 
-  var destinatario = "contacto.trabajofinal.mariposas@example.com";
-  var asunto = "Contacto sitio Mariposas: " + asuntoSeleccionado;
-  var cuerpo =
+  let destinatario = "contacto.trabajofinal.mariposas@example.com";
+  let asunto = "Contacto sitio Mariposas: " + asuntoSeleccionado;
+  let cuerpo =
     "Nombre: " + nombre + " " + apellido + "\n" +
     "Email: " + email + "\n" +
     "Motivo: " + asuntoSeleccionado + "\n\n" +
     "Mensaje:\n" + mensaje;
 
-  var enlaceMailto =
+  let enlaceMailto =
     "mailto:" + destinatario +
     "?subject=" + encodeURIComponent(asunto) +
     "&body=" + encodeURIComponent(cuerpo);
