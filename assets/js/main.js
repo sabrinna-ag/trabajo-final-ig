@@ -5,6 +5,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   marcarEnlaceActivo();
   activarBotonVolverArriba();
+  cerrarMenuMovilAlNavegar();
 });
 
 // Cada subpagina pertenece a una seccion principal del menu. Se usa este
@@ -57,5 +58,23 @@ function activarBotonVolverArriba() {
 
   boton.addEventListener("click", function () {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+}
+
+// En celular, el menu principal queda desplegado (clase "show") hasta que
+// se lo vuelve a tocar. Esto cierra el menu automaticamente al elegir un
+// enlace, para que la navegacion se sienta mas fluida.
+function cerrarMenuMovilAlNavegar() {
+  var menu = document.getElementById("navbarPrincipal");
+  if (!menu) return;
+
+  var enlaces = menu.querySelectorAll("a");
+  enlaces.forEach(function (enlace) {
+    enlace.addEventListener("click", function () {
+      if (menu.classList.contains("show")) {
+        var menuBootstrap = bootstrap.Collapse.getOrCreateInstance(menu);
+        menuBootstrap.hide();
+      }
+    });
   });
 }
