@@ -8,35 +8,33 @@ document.addEventListener("DOMContentLoaded", function () {
   cerrarMenuMovilAlNavegar();
 });
 
-// Cada subpagina pertenece a una seccion principal del menu. Se usa este
-// mapa para que, por ejemplo, estando en "ciclo-de-vida.html" se resalte
-// el enlace "Conocer" (y no se quede el menu sin ningun item marcado).
-const SECCION_DE_LA_PAGINA = {
-  "conocer.html": "conocer.html",
-  "ciclo-de-vida.html": "conocer.html",
-  "anatomia.html": "conocer.html",
-  "especies.html": "especies.html",
-  "mariposa-monarca.html": "especies.html",
-  "mariposas-de-jardin.html": "especies.html",
-  "habitat-jardines.html": "habitat-jardines.html",
-  "plantas-nutricias.html": "habitat-jardines.html",
-  "observacion-responsable.html": "habitat-jardines.html",
-  "galeria.html": "galeria.html",
-  "conservacion.html": "conservacion.html",
-  "recursos.html": "recursos.html",
-  "juego.html": "recursos.html"
-};
+// Cada seccion principal vive en su propia carpeta (ej: conocer/index.html,
+// conocer/ciclo-de-vida.html). El nombre de esa carpeta es el anteultimo
+// segmento de la URL. Se compara contra esta lista para saber en que
+// seccion esta parado el usuario, sin importar la profundidad de la pagina.
+const CARPETAS_DE_SECCION = [
+  "conocer",
+  "especies",
+  "habitat-jardines",
+  "galeria",
+  "conservacion",
+  "recursos"
+];
 
 // Recorre los enlaces del navbar y le agrega la clase "active" al que
 // corresponda con la seccion de la pagina actual (aunque sea una subpagina).
 function marcarEnlaceActivo() {
-  const paginaActual = window.location.pathname.split("/").pop() || "index.html";
-  const seccionActual = SECCION_DE_LA_PAGINA[paginaActual] || paginaActual;
-  const enlaces = document.querySelectorAll(".navbar-mariposas .nav-link");
+  const segmentosRuta = window.location.pathname.split("/").filter(function (segmento) {
+    return segmento !== "";
+  });
+  const carpetaCandidata = segmentosRuta.length > 1 ? segmentosRuta[segmentosRuta.length - 2] : null;
+  const seccionActual = CARPETAS_DE_SECCION.includes(carpetaCandidata) ? carpetaCandidata : null;
 
+  if (!seccionActual) return;
+
+  const enlaces = document.querySelectorAll(".navbar-mariposas .nav-link[data-seccion]");
   enlaces.forEach(function (enlace) {
-    const destino = enlace.getAttribute("href");
-    if (destino === seccionActual) {
+    if (enlace.getAttribute("data-seccion") === seccionActual) {
       enlace.classList.add("active");
     }
   });
